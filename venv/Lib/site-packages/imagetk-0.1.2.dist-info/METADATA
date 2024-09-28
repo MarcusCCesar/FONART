@@ -1,0 +1,133 @@
+Metadata-Version: 2.1
+Name: imagetk
+Version: 0.1.2
+Home-page: 
+Author: 
+Author-email: 
+License: Licence
+Platform: any
+Description-Content-Type: text/markdown
+Requires-Dist: numpy >=1.14.0
+Requires-Dist: pandas >=2.2.0
+Requires-Dist: scipy >=1.0.0
+
+﻿
+## What is it
+
+**imagetk**是一个图像分析的Python包，用以进行图像处理、特征提取、边缘检测等。
+
+**imagetk** is a Python package providing image process, feature extraction, and edge detection.
+
+## Where to get it
+
+最新版本的源码和编译安装包可以在`Python package index`获取。
+
+The source code and binary installers for the latest released version are available at the [Python package index].
+
+https://pypi.org/project/imagetk
+
+可以用pip安装imagetk。
+
+You can install protege like this:
+    
+```
+pip install imagetk
+```
+
+也可以用`setup.py`安装。
+
+Or in the `protege` directory, execute:
+
+```
+python setup.py install
+```
+
+## How to use it
+
+### 特征提取
+
+#### brisque
+
+```
+from imagetk import feature
+import numpy
+from PIL import Image
+
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+brisque_feature=feature.brisque(image)#brique特征计算
+```
+
+#### mean_grad
+
+```
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+mean_grad=feature.mean_grad(image)#mean_grad计算
+```
+
+#### gray_quantile_expose
+
+```
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+bright,dark=feature.gray_quantile_expose(image,q=0.75,pix=(96,192))#gray_quantile_expose计算
+```
+
+#### block_value_expose
+
+```
+image=Image.open("test.png")#图片读取
+image=numpy.array(image)#转换为numpy.array
+bright,dark=feature.block_value_expose(array,stride=8,channel_first=False)
+```
+
+#### cumprob
+
+```
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+cumprob=feature.cumprob(image)
+```
+
+### 边缘检测
+
+#### sobel
+
+```
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+edges=edge.sobel(image)
+```
+
+#### canny
+
+```
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+edges=edge.canny(image,kernel_size=3,sigma=1)
+```
+
+#### houghline
+
+```
+from imagetk import threshold
+
+image=Image.open("test.png")#图片读取
+image = image.convert('L')#转换为灰度图
+image=numpy.array(image)#转换为numpy.array
+# 二值化处理
+thres=threshold.otsu(image)
+image[image>thres]=255
+image[image<=thres]=0
+# 边缘检测
+edge_image=edge.canny(image).astype(numpy.uint8)
+# houghline 检测
+lines=edge.houghlines(edge_image, rho=1, theta=numpy.pi/180, threshold=100)
+```

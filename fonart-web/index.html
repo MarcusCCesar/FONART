@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Estatístico de Paciente de Fonoaudiologia</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDo_td7R5bSLZXg_25FNjf7Tj8yZINc5T4",
+            authDomain: "fonart-8cd50.firebaseapp.com",
+            projectId: "fonart-8cd50",
+            storageBucket: "fonart-8cd50.appspot.com",
+            messagingSenderId: "359305470538",
+            appId: "1:359305470538:web:080940a6afe1df09c5fcb3",
+            measurementId: "G-H6Z37MJL7D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const idadeInput = document.getElementById('idade');
+            idadeInput.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length > 3) {
+                    this.value = this.value.slice(0, 3);
+                }
+                const idade = parseInt(this.value, 10);
+                if (idade > 100) {
+                    this.value = '';
+                } else if (idade < 0) {
+                    this.value = 0;
+                }
+            });
+
+            document.getElementById('pacienteForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const nome = document.getElementById('nome').value;
+                const idade = idadeInput.value;
+                const diagnostico = document.getElementById('diagnostico').value;
+                const localidade = document.getElementById('localidade').value;
+                const tratamento = document.getElementById('tratamento').value;
+                const mes = document.getElementById('mes').value;
+                const consentimento = document.getElementById('consentimento').checked ? "Sim" : "Não";
+
+                if (!document.getElementById('consentimento').checked) {
+                    alert("É necessário dar consentimento para continuar.");
+                    return;
+                }
+
+                try {
+                    const docRef = await addDoc(collection(db, "pacientes"), {
+                        nome,
+                        idade,
+                        diagnostico,
+                        localidade,
+                        tratamento,
+                        mes,
+                        consentimento
+                    });
+                    alert("Paciente cadastrado com sucesso! ID: " + docRef.id);
+                } catch (error) {
+                    console.error("Erro ao adicionar documento: ", error);
+                    alert("Erro ao cadastrar paciente. Tente novamente.");
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Projeto de Extensão Universitária - Estácio 2024 - Marcus Cesar Pereira Ferreira - Matrícula - 202102340918@alunos.estacio.br 
+            Resumo do Projeto: O sistema integra várias tecnologias e foi desenvolvido para a Extensão Universitária na Estácio 2024. 
+            Localmente, utiliza Python firebase_setup.py para integração com o Firebase do Google Cloud e o Cloud Firestore, armazenando dados de pacientes de fonoaudiologia.
+            A interface em Tkinter permite a coleta de informações como nome, idade e diagnóstico. O sistema também oferece funcionalidades como geração de relatórios em PDF e gráficos de análise, além de sincronizar automaticamente os dados locais e na nuvem. 
+            Este formulário utiliza HTML e JavaScript para encaminhar os dados ao Cloud Firestore, que os valida e armazena. O objetivo do formulário WEB https://fonart-8cd50.web.app/ é coletar dados estatísticos de pacientes em tratamento fonoaudiológico. 
+            A coleta de informações como idade, diagnóstico, localidade e tratamento é essencial para entender as necessidades dos pacientes e aprimorar a atuação da equipe. O consentimento do paciente é obrigatório para a utilização dos dados, que são tratados com a máxima confidencialidade, visando à conformidade com a LGPD.*/
+
+      /* Configuração do layout com Flexbox */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E9CD8D;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        img.logo {
+        max-width: 40%; /* Para responsividade */
+        height: auto; /* Mantém a proporção da imagem */
+        margin-bottom: 20px; /* Espaçamento abaixo do logotipo */
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 800px;
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            width: 48%; /* Campos lado a lado */
+        }
+
+        .form-group.full-width {
+            width: 100%;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            max-width: 800px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Relatório Estatístico de Paciente de Fonoaudiologia</h1>
+    <img src="fonart.matriz.png" alt="Logotipo" class="logo">
+
+    <form id="pacienteForm">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" name="idade" min="0" max="100" required>
+        </div>
+        <div class="form-group">
+            <label for="diagnostico">Diagnóstico:</label>
+            <select id="diagnostico" name="diagnostico" required>
+                <option value="" disabled selected>Selecione um diagnóstico</option>
+                <option value="Disartria">Disartria</option>
+                <option value="Afasia">Afasia</option>
+                <option value="Dislexia">Dislexia</option>
+                <option value="Disgrafia">Disgrafia</option>
+                <option value="Disfagia">Disfagia</option>
+                <option value="Gagueira">Gagueira</option>
+                <option value="Autismo">Autismo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="localidade">Localidade:</label>
+            <select id="localidade" name="localidade" required>
+                <option value="" disabled selected>Selecione uma localidade</option>
+                <option value="Rio de Janeiro">Rio de Janeiro</option>
+                <option value="Niterói">Niterói</option>
+                <option value="São Gonçalo">São Gonçalo</option>
+            </select>
+        </div>
+        <div class="form-group full-width">
+            <label for="tratamento">Tratamento:</label>
+            <select id="tratamento" name="tratamento" required>
+                <option value="" disabled selected>Selecione um tratamento</option>
+                <option value="Terapia de Linguagem">Terapia de Linguagem</option>
+                <option value="Terapia de Voz">Terapia de Voz</option>
+                <option value="Terapia de Deglutição">Terapia de Deglutição</option>
+                <option value="Reabilitação da Audição">Reabilitação da Audição</option>
+                <option value="Terapia de Articulação">Terapia de Articulação</option>
+                <option value="Intervenção Precoce">Intervenção Precoce</option>
+                <option value="Terapia de Leitura e Escrita">Terapia de Leitura e Escrita</option>
+            </select>
+        </div>
+        <div class="form-group full-width">
+            <label for="mes">Mês:</label>
+            <select id="mes" name="mes" required>
+                <option value="" disabled selected>Selecione um mês</option>
+                <option value="Janeiro">Janeiro</option>
+                <option value="Fevereiro">Fevereiro</option>
+                <option value="Março">Março</option>
+                <option value="Abril">Abril</option>
+                <option value="Maio">Maio</option>
+                <option value="Junho">Junho</option>
+                <option value="Julho">Julho</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Setembro">Setembro</option>
+                <option value="Outubro">Outubro</option>
+                <option value="Novembro">Novembro</option>
+                <option value="Dezembro">Dezembro</option>
+            </select>
+        </div>
+        <div class="form-group full-width">
+            <label for="consentimento">
+                <input type="checkbox" id="consentimento" name="consentimento" required>
+                Aceito o tratamento de dados conforme a LGPD.
+            </label>
+        </div>
+        <button type="submit">Cadastrar Paciente</button>
+    </form>
+
+    <footer>
+        <p>Projeto de Extensão Universitária - Ciência da Computação - Estácio 2024 - Marcus Cesar Ferreira</p>
+    </footer>
+</body>
+</html>

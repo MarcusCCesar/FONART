@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Pesquisa de Qualidade — Projeto Fonart</title>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // Inicializa o EmailJS
+        (function() {
+            emailjs.init("qP01wKTpg2qeABdul"); // Public Key do EmailJS
+        })();
+    </script>
+    <style>
+        body {
+            background-color: #E9CD8D;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #responseMessage {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Centro de Pesquisa de Qualidade — Projeto Fonart</h1>
+    <form id="suggestionForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="nome" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="partes_envolvidas">Partes envolvidas:</label>
+        <input type="text" id="partes_envolvidas" name="partes_envolvidas">
+
+        <label for="problemas_identificados">Problemas identificados:</label>
+        <input type="text" id="problemas_identificados" name="problemas_identificados">
+
+        <label for="expectativas">Expectativas a serem alcançadas:</label>
+        <input type="text" id="expectativas" name="expectativas">
+
+        <label for="tecnologia_necessaria">Tecnologia necessária:</label>
+        <input type="text" id="tecnologia_necessaria" name="tecnologia_necessaria">
+
+        <label for="tipo_manipulacao_dados">Tipo de manipulação de dados:</label>
+        <input type="text" id="tipo_manipulacao_dados" name="tipo_manipulacao_dados">
+
+        <label for="integracao_banco_dados">Integração com banco de dados:</label>
+        <input type="text" id="integracao_banco_dados" name="integracao_banco_dados">
+
+        <label for="interface_grafica">Interface gráfica:</label>
+        <input type="text" id="interface_grafica" name="interface_grafica">
+
+        <label for="widget">Widget:</label>
+        <input type="text" id="widget" name="widget">
+
+        <label for="projetar_relatorios">Projetar Relatórios:</label>
+        <input type="text" id="projetar_relatorios" name="projetar_relatorios">
+
+        <label for="projetar_graficos">Projetar Gráficos:</label>
+        <input type="text" id="projetar_graficos" name="projetar_graficos">
+
+        <label for="design_interface">Design de Interface:</label>
+        <input type="text" id="design_interface" name="design_interface">
+
+        <label for="sincronizacao_bd">Sincronização com banco de dados:</label>
+        <input type="text" id="sincronizacao_bd" name="sincronizacao_bd">
+
+        <label for="aplicacao_web">Aplicação WEB:</label>
+        <input type="text" id="aplicacao_web" name="aplicacao_web">
+
+        <label for="atender_lgpd">Atender à LGPD:</label>
+        <input type="text" id="atender_lgpd" name="atender_lgpd">
+
+        <label for="possiveis_melhorias">Possíveis melhorias:</label>
+        <input type="text" id="possiveis_melhorias" name="possiveis_melhorias">
+
+        <button type="submit">Enviar Sugestão</button>
+    </form>
+    <div id="responseMessage"></div>
+
+    <script type="text/javascript">
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDo_td7R5bSLZXg_25FNjf7Tj8yZINc5T4",
+            authDomain: "fonart-8cd50.firebaseapp.com",
+            databaseURL: "https://fonart-8cd50-default-rtdb.firebaseio.com",
+            projectId: "fonart-8cd50",
+            storageBucket: "fonart-8cd50.appspot.com",
+            messagingSenderId: "359305470538",
+            appId: "1:359305470538:web:080940a6afe1df09c5fcb3",
+            measurementId: "G-H6Z37MJL7D"
+        };
+        // Inicializando o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Função para enviar as sugestões para o Firestore e EmailJS
+        document.getElementById('suggestionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Capturar os dados do formulário
+            const suggestionData = {
+                nome: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                partes_envolvidas: document.getElementById('partes_envolvidas').value,
+                problemas_identificados: document.getElementById('problemas_identificados').value,
+                expectativas: document.getElementById('expectativas').value,
+                tecnologia_necessaria: document.getElementById('tecnologia_necessaria').value,
+                tipo_manipulacao_dados: document.getElementById('tipo_manipulacao_dados').value,
+                integracao_banco_dados: document.getElementById('integracao_banco_dados').value,
+                interface_grafica: document.getElementById('interface_grafica').value,
+                widget: document.getElementById('widget').value,
+                projetar_relatorios: document.getElementById('projetar_relatorios').value,
+                projetar_graficos: document.getElementById('projetar_graficos').value,
+                design_interface: document.getElementById('design_interface').value,
+                sincronizacao_bd: document.getElementById('sincronizacao_bd').value,
+                aplicacao_web: document.getElementById('aplicacao_web').value,
+                atender_lgpd: document.getElementById('atender_lgpd').value,
+                possiveis_melhorias: document.getElementById('possiveis_melhorias').value
+            };
+
+            // Salvar os dados no Firestore
+            db.collection("suggestions").add(suggestionData)
+            .then(() => {
+                console.log("Sugestão armazenada com sucesso no Firestore!");
+                document.getElementById('responseMessage').textContent = "Sugestão enviada com sucesso!";
+            })
+            .catch((error) => {
+                console.error("Erro ao salvar no Firestore: ", error);
+                document.getElementById('responseMessage').textContent = "Erro ao enviar a sugestão. Tente novamente.";
+            });
+
+            // Enviar o e-mail via EmailJS
+            emailjs.send("service_v58s0wn", "template_hdthm96", suggestionData)
+            .then((response) => {
+                console.log("Sugestão enviada com sucesso para o e-mail!", response.status, response.text);
+                document.getElementById('responseMessage').textContent = "Sugestão enviada com sucesso!";
+            }, (error) => {
+                console.error("Erro ao enviar o e-mail: ", error);
+                document.getElementById('responseMessage').textContent = "Erro ao enviar o e-mail. Tente novamente.";
+            });
+
+            // Limpar o formulário
+            document.getElementById('suggestionForm').reset();
+        });
+    </script>
+</body>
+</html>
