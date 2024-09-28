@@ -85,7 +85,7 @@ pip install pandas reportlab xlsxwriter
    ```
 3. **Execute o arquivo principal**:
    ```bash
-   python sistema_fonart.py
+   python firebase_setup.py
    ```
 
 ---
@@ -135,7 +135,7 @@ Em caso de dúvidas ou sugestões, entre em contato:
 
 ## 7. Licença
 
-Este projeto está sob a licença [inserir tipo de licença aqui]. 
+Este projeto está sob a licença MIT. 
 
 ---
 
