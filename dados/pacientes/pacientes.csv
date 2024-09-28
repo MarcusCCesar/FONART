@@ -1,11 +1,2 @@
 nome,idade,diagnostico,localidade,tratamento,mes,consentimento
-Leandro,23,Disfagia,São Gonçalo,Terapia de Deglutição,Abril,True
-Robson,34,Disgrafia,Rio de Janeiro,Intervenção Precoce,Março,Sim
-Maya,45,Afasia,Niterói,Terapia de Voz,Janeiro,Sim
-Katarina,55,Afasia,Niterói,Terapia de Leitura e Escrita,Julho,Sim
-Margarida Leal,34,Dislexia,Rio de Janeiro,Terapia de Voz,Novembro,Sim
-miranda,34,Dislexia,Niterói,Terapia de Deglutição,Abril,True
-miranda,34,Dislexia,Niterói,Terapia de Deglutição,Abril,True
-Lívia Robwrt,34,Afasia,Niterói,Terapia de Deglutição,Novembro,Sim
-Marcelo,24,Afasia,Niterói,Terapia de Voz,Março,Sim
-Felipe,56,Dislexia,Rio de Janeiro,Terapia de Leitura e Escrita,Dezembro,Sim
+,Maio,True
