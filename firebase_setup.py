@@ -33,6 +33,7 @@ def inicializar_firebase():
     try:
         # Verifica se o Firebase já foi inicializado
         if not firebase_admin._apps:  # Verifica se não há aplicativos já inicializados
+            print("Inicializando Firebase...")
             cred = credentials.Certificate("C:\\Projeto_Estacio_2024-Fono\\Projeto_Fonart\\dados\\Firebase\\fonart-8cd50-firebase-adminsdk-8qaui-3dd6e0939e.json")
             firebase_admin.initialize_app(cred)
         db = firestore.client()  # Conexão com o Firestore
