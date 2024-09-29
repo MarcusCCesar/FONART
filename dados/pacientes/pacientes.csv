@@ -1,0 +1,7 @@
+nome,idade,diagnostico,localidade,tratamento,mes,consentimento,data_modificacao
+Roberto Carlos,56,Disgrafia,São Gonçalo,Terapia de Deglutição,Março,True,2024-09-28T23:55:04.897892
+Kátia,34,Gagueira,Rio de Janeiro,Intervenção Precoce,Outubro,Sim,Não disponível
+ Marcus Cesar Ferreira,49,Autismo,Rio de Janeiro,Terapia de Leitura e Escrita,Setembro,True,2024-09-28T23:50:29.036382
+Roberto,33,Dislexia,Niterói,Reabilitação da Audição,Maio,True,2024-09-28T23:51:50.136068
+ Manuel ,33,Disgrafia,São Gonçalo,Terapia de Linguagem,Março,True,2024-09-28T23:45:48.648607
+Leandro,89,Disgrafia,São Gonçalo,Terapia de Deglutição,Abril,True,2024-09-28T23:54:05.723026
