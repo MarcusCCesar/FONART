@@ -3,7 +3,7 @@ Projeto de Extensão Universitária - Estácio 2024 - Marcus Cesar Pereira Ferre
 Resumo do Projeto: Este sistema integra várias tecnologias e foi desenvolvido para a Extensão Universitária na Estácio 2024. Localmente, utiliza Python para integração com o Firebase do Google Cloud e o Cloud Firestore, armazenando dados de pacientes de fonoaudiologia.
 
         A interface em Tkinter permite a coleta de informações como nome, idade e diagnóstico. O sistema também oferece funcionalidades como geração de relatórios em PDF e gráficos de análise, além de sincronizar automaticamente os dados locais e na nuvem. O formulário utiliza HTML e JavaScript para encaminhar os dados ao Cloud Firestore, que os valida e armazena.
-        O objetivo do formulário WEB https://fonart-8cd50.web.app/ é coletar dados estatísticos de pacientes em tratamento fonoaudiológico. A coleta de informações como idade, diagnóstico, localidade e tratamento é essencial para entender as necessidades dos pacientes e aprimorar a atuação da equipe. O consentimento do paciente é obrigatório para a utilização dos dados, que são tratados com a máxima confidencialidade, visando à conformidade com a LGPD.
+        O objetivo do formulário WEB https://fonart-8cd50.web.app/ é coletar dados estatísticos de pacientes em tratamento fonoaudiológico. A coleta de informações como idade, diagnóstico, localidade e tratamento é essencial para entender as necessidades dos pacientes e aprimorar a atuação da equipe. O consentimento do paciente é obrigatório para a utilização dos dados, tratados com a máxima confidencialidade, visando à conformidade com a LGPD.
 """
 # Importações necessárias para o sistema
 
