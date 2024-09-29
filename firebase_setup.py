@@ -36,6 +36,7 @@ def inicializar_firebase():
     """Inicializa a conexão com o Firebase e retorna a instância do Firestore."""
     try:
         if not firebase_admin._apps:  # Verifica se o Firebase já foi inicializado
+            # Configuração do Firebase
             cred = credentials.Certificate(r"C:\Projeto_Estacio_2024-Fono\Projeto_Fonart\dados\Firebase\fonart-8cd50-firebase-adminsdk-8qaui-db13e0addd.json")
             firebase_admin.initialize_app(cred)
         db = firestore.client()  # Conexão com o Firestore
@@ -67,54 +68,57 @@ def validar_dados(nome, idade, diagnostico, localidade, tratamento, mes, consent
 
 # Função para salvar dados no Firebase
 def salvar_dados_firebase(dados_paciente):
+    global status_label  # Torna o status_label acessível dentro da função
     try:
         db = inicializar_firebase()  # Inicializa o Firebase e conecta ao Firestore
         if db:
-            
-            # Adiciona um timestamp aos dados do paciente
             dados_paciente['data_modificacao'] = datetime.now().isoformat()
-            db.collection('pacientes').add(dados_paciente)  # Adiciona os dados à coleção 'pacientes'
+            db.collection('pacientes').add(dados_paciente)
+            # Lógica para salvar os dados no Firebase...
             print("Dados salvos com sucesso no Firebase!")
-            logging.info(f"Dados salvos no Firebase: {dados_paciente}")  # Log de dados salvos
-    except Exception as e:
-        print(f"Erro ao salvar dados: {e}")
-        logging.error(f"Erro ao salvar dados no Firebase: {e}")  # Log de erro
+            logging.info(f"Dados salvos no Firebase: {dados_paciente}")
 
-        # Chama a sincronização com o CSV após o salvamento
-        sincronizar_firestore_para_csv(db)
+            # Atualiza o status de sucesso
+            status_label.config(text="DADOS ENVIADOS COM SUCESSO!", fg="green")
     except Exception as e:
-        print(f"Erro ao salvar dados: {e}")
-        logging.error(f"Erro ao salvar dados no Firebase: {e}")  # Log de erro
+        print(f"ERRO AO SALVAR DADOS: {e}")
+        logging.error(f"Erro ao salvar dados no Firebase: {e}")
+
+        # Atualiza o status de erro
+        status_label.config(text="Erro ao enviar os dados.", fg="red")
 
 # Função para salvar os dados no CSV local
 def salvar_dados_csv(dados_paciente):
-    """Salva os dados em um arquivo CSV chamado pacientes.csv."""
+    global status_label  # Torna o status_label acessível dentro da função
     arquivo_csv = r'C:\\Projeto_Estacio_2024-Fono\\Projeto_Fonart\\dados\\pacientes\\pacientes.csv'
-  
-    # Define o cabeçalho e os dados a serem salvos
     campos = ['nome', 'idade', 'diagnostico', 'localidade', 'tratamento', 'mes', 'consentimento', 'data_modificacao']
     try:
         with open(arquivo_csv, mode='a', newline='', encoding='utf-8') as arquivo:
             escritor_csv = csv.DictWriter(arquivo, fieldnames=campos)
-            if arquivo.tell() == 0:  # Verifica se o arquivo está vazio
-                escritor_csv.writeheader()  # Se o arquivo não existir, escreve o cabeçalho
-           
-            # Escreve os dados do paciente no CSV
+            if arquivo.tell() == 0:
+                escritor_csv.writeheader()
+
             escritor_csv.writerow(dados_paciente)
-            logging.info(f'Dados salvos no CSV: {dados_paciente}')  # Registro de dados salvos
+            logging.info(f'Dados salvos no CSV: {dados_paciente}')
             print(f"Dados salvos com sucesso no arquivo {arquivo_csv}!")
+
+            # Atualiza o status de sucesso
+            status_label.config(text="Dados salvos no CSV com sucesso!", fg="green")
     except Exception as e:
-        logging.error(f'Erro ao salvar dados no CSV: {e}')  # Registro de erro
+        logging.error(f'Erro ao salvar dados no CSV: {e}')
         print(f"Erro ao salvar dados no CSV: {e}")
+
+        # Atualiza o status de erro
+        status_label.config(text="Erro ao salvar os dados no CSV.", fg="red")
 
 # Função para salvar os dados após validação
 def salvar_dados(db, nome, idade, diagnostico, localidade, tratamento, mes, consentimento, data_modificacao):
     data_modificacao = datetime.now()  # Corrige o uso do datetime
    
-    # Lógica para salvar os dados no banco de dados
+    # Exibe a data de modificação
     print(f"Data de Modificação: {data_modificacao}")
    
-    # Continue com a lógica de salvar os dados
+    # Lógica para salvar os dados no banco de dados
     """Salva os dados se forem válidos."""
     if validar_dados(nome, idade, diagnostico, localidade, tratamento, mes, consentimento):
         dados_paciente = {
@@ -125,6 +129,7 @@ def salvar_dados(db, nome, idade, diagnostico, localidade, tratamento, mes, cons
             "tratamento": tratamento,
             "mes": mes,
             "consentimento": consentimento
+            
         }
         print(f"Salvando dados: {dados_paciente}")  # Log detalhado
         salvar_dados_firebase(dados_paciente)  # Salva no Firebase
@@ -157,7 +162,6 @@ def sincronizar_firestore_para_csv(db):
     
     except Exception as e:
         print(f"Erro ao sincronizar Firestore para CSV: {e}")
-
 
 # Sincronização CSV para Firestore
 def sincronizar_csv_para_firestore(db):
@@ -322,6 +326,7 @@ def adicionar_rodape(c):
 
 # Criação da interface gráfica
 def criar_janela_principal(db):
+    global status_label  # Declara que irá usar a variável global
     """Cria a janela principal da aplicação."""
     janela = tk.Tk()
     janela.title("Sistema FONART")
